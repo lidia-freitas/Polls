@@ -24,10 +24,10 @@ class Poll
         $poll = $statement->fetchObject('\Model\Poll');
 
         if ($poll) {
-            $sql = 'SELECT choices.id, choices.choice, COUNT(votes.choice_id) AS votes '
+            $sql = 'SELECT DISTINCT(choices.id), choices.choice, COUNT(votes.choice_id) AS votes '
                  . 'FROM choices CROSS JOIN polls '
                  . 'LEFT JOIN votes ON choices.id = votes.choice_id '
-                 . 'WHERE polls.id = ' . (int) $id
+                 . 'WHERE choices.poll_id = ' . (int) $id
                  . ' GROUP BY choices.id, choices.choice, polls.id';
             $statement = $pdo->query($sql);
             $poll->setChoices($statement->fetchAll(\PDO::FETCH_OBJ));
