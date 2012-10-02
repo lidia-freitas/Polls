@@ -8,7 +8,7 @@ class Poll
         $sql = 'SELECT DISTINCT polls.id, polls.question, polls.icon '
              . 'FROM polls '
              . 'INNER JOIN choices ON polls.id = choices.poll_id';
-        $pdo = new \PDO('mysql:dbname=polls;host=127.0.0.1', 'root', NULL);
+        $pdo = new \PDO('mysql:dbname=polls;host=127.0.0.1;charset=utf8', 'root', NULL);
         $statement = $pdo->query($sql);
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
@@ -19,7 +19,7 @@ class Poll
              . 'FROM polls '
              . 'INNER JOIN choices ON polls.id = choices.poll_id '
              . 'WHERE polls.id = ' . (int) $id;
-        $pdo = new \PDO('mysql:dbname=polls;host=127.0.0.1', 'root', NULL);
+        $pdo = new \PDO('mysql:dbname=polls;host=127.0.0.1;charset=utf8', 'root', NULL);
         $statement = $pdo->query($sql);
         $poll = $statement->fetchObject('\Model\Poll');
 
