@@ -1,5 +1,5 @@
 <?php
-namespace Persistence\Gateway;
+namespace Polls\Persistence\Gateway;
 
 class Vote
 {

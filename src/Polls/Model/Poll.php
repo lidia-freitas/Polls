@@ -1,5 +1,5 @@
 <?php
-namespace Model;
+namespace Polls\Model;
 
 class Poll
 {

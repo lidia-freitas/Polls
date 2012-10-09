@@ -1,5 +1,5 @@
 <?php
-namespace Persistence\Gateway;
+namespace Polls\Persistence\Gateway;
 
 class Poll
 {
@@ -21,7 +21,7 @@ class Poll
              . 'WHERE polls.id = ' . (int) $id;
         $pdo = new \PDO('mysql:dbname=polls;host=127.0.0.1;charset=utf8', 'root', NULL);
         $statement = $pdo->query($sql);
-        $poll = $statement->fetchObject('\Model\Poll');
+        $poll = $statement->fetchObject('Polls\Model\Poll');
 
         if ($poll) {
             $sql = 'SELECT DISTINCT(choices.id), choices.choice, COUNT(votes.choice_id) AS votes '

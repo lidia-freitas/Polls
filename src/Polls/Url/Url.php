@@ -1,5 +1,5 @@
 <?php
-namespace Url;
+namespace Polls\Url;
 
 class Url
 {
