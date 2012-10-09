@@ -26,7 +26,7 @@ Slim_Route::setDefaultConditions(['id' => '[0-9]+']);
 
 $app->get('/', function () use ($app) {
     $polls = (new Persistence\Gateway\Poll())->all();
-    $app->render('index.tpl', ['polls' => $polls,]);
+    $app->render('index.html', ['polls' => $polls,]);
 });
 
 $app->get('/poll/:id', function ($id) use ($app) {
@@ -34,7 +34,7 @@ $app->get('/poll/:id', function ($id) use ($app) {
     if (!$poll) {
         $app->notFound();
     }
-    $app->render('poll.tpl', ['poll' => $poll,]);
+    $app->render('poll.html', ['poll' => $poll,]);
 })->name('poll');
 
 $app->post('/poll/:id', function ($id) use ($app) {
@@ -51,7 +51,7 @@ $app->get('/poll/results/:id', function ($id) use ($app) {
     if (!$poll) {
         $app->notFound();
     }
-    $app->render('results.tpl', ['poll' => $poll,]);
+    $app->render('results.html', ['poll' => $poll,]);
 });
 
 $app->run();
