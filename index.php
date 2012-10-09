@@ -1,14 +1,13 @@
 <?php
-require_once 'Slim/Slim.php';
-require_once 'vendor/mustache/mustache/src/Mustache/Autoloader.php';
-require_once 'vendor/slim/extras/Views/MustacheView.php';
-require_once 'Library/Persistence/Gateway/Poll.php';
-require_once 'Library/Persistence/Gateway/Vote.php';
-require_once 'Library/Model/Poll.php';
-require_once 'Library/Url/Url.php';
+require_once 'vendor/autoload.php';
 
-Mustache_Autoloader::register();
-$view = new MustacheView();
+use Slim\Extras\Views\Mustache;
+use Slim\Slim;
+use Slim\Route;
+use Polls\Url\Url;
+
+Mustache::$mustacheDirectory = __DIR__ . '/vendor/mustache/mustache/src/Mustache';
+$view = new Mustache();
 
 $app = new Slim([
     'view' => $view,
@@ -18,19 +17,19 @@ $app = new Slim([
 $app->setName('Polls');
 
 $app->hook('slim.before', function () use ($app) {
-    $baseUrl = (new Url\Url())->base();
+    $baseUrl = (new Url())->base();
     $app->view()->appendData(['baseUrl' => $baseUrl,]);
 });
 
-Slim_Route::setDefaultConditions(['id' => '[0-9]+']);
+Route::setDefaultConditions(['id' => '[0-9]+']);
 
 $app->get('/', function () use ($app) {
-    $polls = (new Persistence\Gateway\Poll())->all();
-    $app->render('index.html', ['polls' => $polls,]);
+    $polls = (new Polls\Persistence\Gateway\Poll())->all();
+    $app->render('index.tpl', ['polls' => $polls,]);
 });
 
 $app->get('/poll/:id', function ($id) use ($app) {
-    $poll = (new Persistence\Gateway\Poll())->load($id);
+    $poll = (new Polls\Persistence\Gateway\Poll())->load($id);
     if (!$poll) {
         $app->notFound();
     }
@@ -38,16 +37,16 @@ $app->get('/poll/:id', function ($id) use ($app) {
 })->name('poll');
 
 $app->post('/poll/:id', function ($id) use ($app) {
-    $poll = (new Persistence\Gateway\Poll())->load($id);
+    $poll = (new Polls\Persistence\Gateway\Poll())->load($id);
     if (!$poll) {
         $app->notFound();
     }
-    (new Persistence\Gateway\Vote())->add($_POST['choice'], $_SERVER['REMOTE_ADDR']);
-    $app->redirect((new Url\Url())->base() . 'index.php/poll/results/' . $id);
+    (new Polls\Persistence\Gateway\Vote())->add($_POST['choice'], $_SERVER['REMOTE_ADDR']);
+    $app->redirect((new Url())->base() . 'index.php/poll/results/' . $id);
 })->name('poll');
 
 $app->get('/poll/results/:id', function ($id) use ($app) {
-    $poll = (new Persistence\Gateway\Poll())->load($id);
+    $poll = (new Polls\Persistence\Gateway\Poll())->load($id);
     if (!$poll) {
         $app->notFound();
     }
