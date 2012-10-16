@@ -8,36 +8,40 @@
         
     <title>Poll</title>
         
-    <link rel="stylesheet" href="public_html/bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="public_html/bootstrap/css/bootstrap-responsive.css" />
+    <link rel="stylesheet" href="templates/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="templates/lib/bootstrap/css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css"href="templates/assets/css/general.css" />
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="public_html/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="templates/lib/bootstrap/js/bootstrap.js"></script>
   </head>
   <body>
-    <div class="container">
+  <div class="container">
+  {{#poll}}
+  <div class="row">
+    <ul class="breadcrumb span12">
+      <li><a href="{{baseUrl}}">Home</a><span class="divider">/</span></li>
+      <li class="active">{{getQuestion}}</li>
+    </ul>
+  </div>    
+  
+  <div class="row">
+    <h1 class="span6 offset3">{{getQuestion}}</h1>
+    <img src="{{getIcon}}" alt="" />
+    <form class="span6 offset3" method="post" action="index.php/poll/{{id}}">
+      {{#getChoices}}
+      <label class="radio" for="choice-{{id}}" >{{choice}}
+        <input type="radio" id="choice-{{id}}" name="choice"  value="{{id}}" required />
+      </label>
+      {{/getChoices}}
       
-      <div class="row">
-        <nav class="span12">
-          <ul>
-            <li><a href="{{baseUrl}}">Home</a></li>
-          </ul>
-        </nav>
+      <div class="form-actions">
+        <a href="{{baseUrl}}" class="btn" >Cancel</a>
+        <button type="submit" class="btn btn-primary">Vote!</button>
       </div>
-     
-      {{#poll}}
-      <div class="row">
-        <h1>{{getQuestion}}</h1>
-        <img src="{{getIcon}}" alt="" />
-        <form method="post" action="index.php/poll/{{id}}">
-          {{#getChoices}}
-          <input id="choice-{{id}}" name="choice" type="radio" value="{{id}}" />
-          <label for="choice-{{id}}">{{choice}}</label>
-          {{/getChoices}}
-          <input type="submit" value="Vote!" />
-        </form>
-        <a href="{{baseUrl}}index.php/poll/results/{{id}}">Results</a>
-      </div>
-      {{/poll}}
+    </form>
+    <a class="span6 offset3" href="{{baseUrl}}index.php/poll/results/{{id}}">Results</a>
+  </div>
+  {{/poll}}
       
     </div>
   </body>

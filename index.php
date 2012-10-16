@@ -1,5 +1,5 @@
 <?php
-require_once 'vendor/autoload.php';
+require_once 'vendor/autoload.php'; 
 
 use Slim\Extras\Views\Mustache;
 use Slim\Slim;
@@ -25,7 +25,7 @@ Route::setDefaultConditions(['id' => '[0-9]+']);
 
 $app->get('/', function () use ($app) {
     $polls = (new Polls\Persistence\Gateway\Poll())->all();
-    $app->render('index.tpl', ['polls' => $polls,]);
+    $app->render('index.html', ['polls' => $polls,]);
 });
 
 $app->get('/poll/:id', function ($id) use ($app) {
